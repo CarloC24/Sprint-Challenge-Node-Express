@@ -1,7 +1,7 @@
-const actionDb = require('./data/helpers/actionModel');
+const projectDb = require('./data/helpers/projectModel');
 
 const checker = r => {
-  if (r.project_id && r.description && r.notes) {
+  if (r.name && r.description) {
     return true;
   } else {
     return false;
@@ -11,26 +11,26 @@ const checker = r => {
 module.exports = {
   get: async (req, res) => {
     try {
-      const response = await actionDb.get();
+      const response = await projectDb.get();
       res.status(200).json({ response });
     } catch (err) {
-      res.status(404).json({ err });
+      res.status(404).json(err);
     }
   },
   getId: async (req, res) => {
     try {
       const { id } = req.params;
-      const response = await actionDb.get(id);
+      const response = await projectDb.get(id);
       res.status(200).json({ response });
     } catch (err) {
-      res.status(404).json({ err });
+      res.status(404).json({ message: 'no user' });
     }
   },
   addAction: async (req, res) => {
     const user = req.body;
     if (checker(user)) {
       try {
-        const response = await actionDb.insert(user);
+        const response = await projectDb.insert(user);
         res.status(204).json(response);
       } catch (err) {
         res.status(404).json({ message: 'cant read the req.body' });
@@ -41,10 +41,11 @@ module.exports = {
   },
   updateAction: async (req, res) => {
     const user = req.body;
+    console.log(user);
     const { id } = req.params;
     if (checker(user)) {
       try {
-        const response = await actionDb.update(id, user);
+        const response = await projectDb.update(id, user);
         res.status(204).json(response);
       } catch (err) {
         res.status(404).json({ message: 'cant read the req.body' });
@@ -56,7 +57,7 @@ module.exports = {
   delete: async (req, res) => {
     const { id } = req.params;
     try {
-      const response = await actionDb.remove(id);
+      const response = await projectDb.remove(id);
       res.status(200).json({ message: 'Successfully Removed user' });
     } catch (err) {
       res.status(404).json({ message: 'user not found please put a valid id' });
