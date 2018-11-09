@@ -6,7 +6,11 @@ import { get, deleteAction } from './CRUD';
 import UpdateForm from './UpdateForm';
 
 const App = () => {
-  const [actions, setActions] = useState([]);
+  const [actions, setActions] = useState({
+    actions: [],
+    updateBool: false,
+    actionId: ''
+  });
 
   useEffect(
     () => {
@@ -23,10 +27,18 @@ const App = () => {
     deleteAction(id);
     reload();
   };
+  const updateId = id => {
+    console.log(id, 'im at the update id');
+    return id;
+  };
 
   const toggleUpdate = id => {
     if (id) {
-      return true;
+      setActions(prevstate => ({
+        ...prevstate,
+        updateBool: !prevstate.updateBool,
+        actionId: id
+      }));
     } else {
       return false;
     }
@@ -34,13 +46,15 @@ const App = () => {
   return (
     <div className="app">
       <ShowActions
-        actions={actions}
+        actions={actions.actions}
         handleDelete={handleDelete}
         reload={reload}
         toggleUpdate={toggleUpdate}
       />
       <AddActionForm reload={reload} />
-      {toggleUpdate() ? <UpdateForm /> : null}
+      {actions.updateBool ? (
+        <UpdateForm actions={actions.actions} id={actions.actionId} />
+      ) : null}
     </div>
   );
 };
