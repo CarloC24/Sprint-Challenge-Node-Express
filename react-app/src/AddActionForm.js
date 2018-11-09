@@ -31,7 +31,6 @@ export default props => {
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
     if (actionChecker(singleAction)) {
       insert(singleAction);
       clear();
@@ -39,10 +38,11 @@ export default props => {
     } else {
       return alert('a field cannot be empty');
     }
+    e.preventDefault();
   };
-  console.log(props);
   return (
     <div>
+      <h1>Add a action?</h1>
       <form onSubmit={e => handleSubmit(e)}>
         <input
           type="text"

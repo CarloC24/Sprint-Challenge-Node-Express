@@ -3,16 +3,19 @@ import ShowActions from './ShowActions';
 import AddActionForm from './AddActionForm';
 import './App.css';
 import { get, deleteAction } from './CRUD';
+import UpdateForm from './UpdateForm';
 
 const App = () => {
   const [actions, setActions] = useState([]);
 
-  useEffect(() => {
-    get(setActions);
-  }, []);
+  useEffect(
+    () => {
+      get(setActions);
+    },
+    [actions]
+  );
 
   const reload = () => {
-    console.log('you reached me');
     get(setActions);
   };
 
@@ -20,15 +23,24 @@ const App = () => {
     deleteAction(id);
     reload();
   };
+
+  const toggleUpdate = id => {
+    if (id) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   return (
     <div className="app">
-      <h1> Kevin I only have crud on actions it seems redundant XD</h1>
       <ShowActions
         actions={actions}
         handleDelete={handleDelete}
         reload={reload}
+        toggleUpdate={toggleUpdate}
       />
       <AddActionForm reload={reload} />
+      {toggleUpdate() ? <UpdateForm /> : null}
     </div>
   );
 };

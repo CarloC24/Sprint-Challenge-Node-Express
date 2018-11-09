@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default props => {
-  useEffect(() => {
-    props.reload();
-  }, []);
   return (
     <div>
       {props.actions.map((item, index) => {
         return (
-          <div key={index}>
+          <div key={index} onClick={() => props.toggleUpdate(item.id)}>
             <h1>{item.project_id}</h1>
             <h1>{item.description}</h1>
             <h1>{item.notes}</h1>
